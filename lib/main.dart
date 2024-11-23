@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_application_1/view/login_screen.dart';
 import 'firebase_options.dart';
 
 void  main() async{
-  runApp(const MainApp());
+  runApp(MyApp());
   
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -11,17 +12,13 @@ void  main() async{
   
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      title: 'Controle de Abastecimento',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: LoginScreen(),
     );
   }
 }
