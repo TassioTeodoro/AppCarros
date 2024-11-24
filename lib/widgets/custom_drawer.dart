@@ -1,79 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/login_screen.dart';
+import '../controllers/auth_controller.dart';
 
 class CustomDrawer extends StatelessWidget {
+  final AuthController _authController = AuthController();
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
             decoration: BoxDecoration(color: Colors.blue),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    size: 50,
-                    color: Colors.blue,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Usuário',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-                Text(
-                  'email@exemplo.com',
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                ),
-              ],
+            child: Text(
+              'Menu de Navegação',
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ),
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
             onTap: () {
-              // Navegação para a tela principal
+              Navigator.pushNamed(context, '/home');
             },
           ),
           ListTile(
-            leading: Icon(Icons.directions_car),
+            leading: Icon(Icons.car_rental),
             title: Text('Meus Veículos'),
             onTap: () {
-              // Navegação para a lista de veículos
+              Navigator.pushNamed(context, '/meus-veiculos');
             },
           ),
           ListTile(
-            leading: Icon(Icons.add_circle),
+            leading: Icon(Icons.add),
             title: Text('Adicionar Veículo'),
             onTap: () {
-              // Navegação para o formulário de cadastro de veículo
+              Navigator.pushNamed(context, '/adicionar-veiculo');
             },
           ),
           ListTile(
             leading: Icon(Icons.history),
             title: Text('Histórico de Abastecimentos'),
             onTap: () {
-              // Navegação para o histórico geral
+              Navigator.pushNamed(context, '/historico-abastecimentos');
             },
           ),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Perfil'),
             onTap: () {
-              // Navegação para a tela de perfil do usuário
+              Navigator.pushNamed(context, '/perfil');
             },
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
-            onTap: () {
-              // Ação de logout
+            onTap: () async {
+              await _authController.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
             },
           ),
         ],

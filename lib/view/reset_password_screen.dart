@@ -1,42 +1,36 @@
 import 'package:flutter/material.dart';
 import '../controllers/auth_controller.dart';
 
-class RegisterScreen extends StatefulWidget {
+class ResetPasswordScreen extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   final AuthController _authController = AuthController();
   bool _isLoading = false;
 
-  Future<void> _register() async {
+  Future<void> _resetPassword() async {
     setState(() => _isLoading = true);
-    final message = await _authController.signUp(
-      _emailController.text.trim(),
-      _passwordController.text.trim(),
-    );
+    final message = await _authController.resetPassword(_emailController.text.trim());
     setState(() => _isLoading = false);
 
-    if (message == null) {
-      Navigator.pop(context);
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Erro'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(message == null ? 'Sucesso' : 'Erro'),
+        content: Text(
+          message == null ? 'Verifique seu e-mail para redefinir a senha.' : message,
         ),
-      );
-    }
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -59,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Crie sua conta',
+                      'Recuperar Senha',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -69,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Preencha os campos abaixo para se registrar',
+                      'Digite seu e-mail para receber instruções de recuperação',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
@@ -85,43 +79,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    SizedBox(height: 16),
-                    TextField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        labelText: 'Senha',
-                        prefixIcon: Icon(Icons.lock),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      obscureText: true,
-                    ),
                     SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: _isLoading ? null : _register,
+                      onPressed: _isLoading ? null : _resetPassword,
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: _isLoading
-                          ? CircularProgressIndicator(
-                              color: Colors.white,
-                            )
-                          : Text('Cadastrar'),
+                          ? CircularProgressIndicator(color: Colors.white)
+                          : Text('Enviar'),
                     ),
                     SizedBox(height: 16),
                     Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Já possui uma conta? "),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('Voltar ao login'),
-                        ),
-                      ],
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Voltar ao login'),
                     ),
                   ],
                 ),
