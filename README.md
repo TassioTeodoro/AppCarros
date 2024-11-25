@@ -41,7 +41,7 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 ## 💻 Como Executar
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/controle-abastecimento.git
+   git clone https://github.com/TassioTeodoro/AppCarros.git
    ```
 2. Acesse o diretório do projeto:
    ```bash
