@@ -24,11 +24,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/', // Tela inicial
+      initialRoute: '/', 
       routes: {
-        '/': (context) => HomeScreen(), // Rota da tela inicial
-        '/meus-veiculos': (context) => VehicleListScreen(), // Rota para "Meus Veículos"
-        '/adicionar-veiculo': (context) => VehicleFormScreen(), // Rota para adicionar veículo
+        '/': (context) => HomeScreen(), 
+        '/meus-veiculos': (context) => VehicleListScreen(), 
+        '/adicionar-veiculo': (context) => VehicleFormScreen(), 
       },
     );
   }

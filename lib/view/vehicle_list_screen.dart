@@ -4,7 +4,6 @@ import 'package:flutter_application_1/model/vehicle_model.dart';
 import 'package:flutter_application_1/view/vehicle_form_screen.dart';
 import 'package:flutter_application_1/widgets/custom_drawer.dart';
 
-
 class VehicleListScreen extends StatefulWidget {
   @override
   _VehicleListScreenState createState() => _VehicleListScreenState();
@@ -43,16 +42,29 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
           ),
         ],
       ),
-      drawer: CustomDrawer(), // Adicionando o Menu Drawer
+      drawer: CustomDrawer(),
       body: FutureBuilder<List<VehicleModel>>(
         future: _vehiclesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Erro ao carregar os veículos.'));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Erro ao carregar os veículos.'),
+                  TextButton(
+                    onPressed: _refreshVehicles,
+                    child: Text('Tentar Novamente'),
+                  ),
+                ],
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('Nenhum veículo cadastrado.'));
+            return Center(
+              child: Text('Você ainda não cadastrou veículos.'),
+            );
           }
 
           final vehicles = snapshot.data!;
@@ -68,7 +80,12 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      // Implementar edição no próximo passo
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VehicleFormScreen(vehicle: vehicle),
+                        ),
+                      ).then((_) => _refreshVehicles());
                     },
                   ),
                   onLongPress: () {
@@ -87,8 +104,8 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Excluir Veículo'),
-        content: Text('Deseja realmente excluir este veículo?'),
+        title: Text('Confirmar Exclusão'),
+        content: Text('Tem certeza de que deseja excluir este veículo? Esta ação não pode ser desfeita.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -96,14 +113,31 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
           ),
           TextButton(
             onPressed: () async {
-              await _vehicleController.deleteVehicle(id);
               Navigator.pop(context);
-              _refreshVehicles();
+              await _deleteVehicleWithLoading(id);
             },
             child: Text('Excluir'),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _deleteVehicleWithLoading(String id) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => Center(child: CircularProgressIndicator()),
+    );
+    try {
+      await _vehicleController.deleteVehicle(id);
+      _refreshVehicles();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao excluir o veículo.')),
+      );
+    } finally {
+      Navigator.pop(context); // Fecha o diálogo de carregamento
+    }
   }
 }

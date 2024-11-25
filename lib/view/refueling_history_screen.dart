@@ -15,8 +15,7 @@ class _RefuelingHistoryScreenState extends State<RefuelingHistoryScreen> {
   }
 
   Future<List<Map<String, dynamic>>> _fetchRefuelingHistory() async {
-    // Simulando dados de abastecimentos
-    await Future.delayed(Duration(seconds: 1)); // Simula um carregamento
+    await Future.delayed(Duration(seconds: 1));
     return [
       {
         'vehicle': 'Carro 1',

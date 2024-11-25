@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_drawer.dart';
-import 'vehicle_list_screen.dart'; // Tela de Meus Veículos
-import 'refueling_history_screen.dart'; // Tela de Histórico de Abastecimentos
+import 'vehicle_list_screen.dart';
+import 'refueling_history_screen.dart'; 
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
         title: Text('Controle de Abastecimento'),
         centerTitle: true,
       ),
-      drawer: CustomDrawer(), // Adicionado Menu Drawer
+      drawer: CustomDrawer(), 
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -36,7 +36,6 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  // Redirecionar para a tela de Meus Veículos
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => VehicleListScreen()),
@@ -56,7 +55,6 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Redirecionar para a tela de Histórico de Abastecimentos
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => RefuelingHistoryScreen()),
