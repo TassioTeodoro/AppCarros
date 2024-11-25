@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_drawer.dart';
 import 'vehicle_list_screen.dart';
-import 'refueling_history_screen.dart'; 
+import 'refuel_history_screen.dart'; 
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -57,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RefuelingHistoryScreen()),
+                    MaterialPageRoute(builder: (context) => RefuelingHistoryScreen(vehicleId: 'vehicleId123')),
                   );
                 },
                 style: ElevatedButton.styleFrom(

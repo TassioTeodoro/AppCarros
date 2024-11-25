@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/auth_controller.dart';
 import 'package:flutter_application_1/view/home_screen.dart';
 import 'package:flutter_application_1/view/login_screen.dart';
+import 'package:flutter_application_1/view/refuel_form_screen.dart';
 import 'package:flutter_application_1/view/vehicle_list_screen.dart';
 import 'package:flutter_application_1/view/vehicle_form_screen.dart';
+
 
 class CustomDrawer extends StatelessWidget {
   final AuthController _authController = AuthController();
@@ -19,7 +21,8 @@ class CustomDrawer extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return DrawerHeader(
                   decoration: BoxDecoration(color: Colors.blue),
-                  child: Center(child: CircularProgressIndicator(color: Colors.white)),
+                  child: Center(
+                      child: CircularProgressIndicator(color: Colors.white)),
                 );
               } else if (snapshot.hasError || !snapshot.hasData) {
                 return DrawerHeader(
@@ -48,7 +51,10 @@ class CustomDrawer extends StatelessWidget {
                   backgroundColor: Colors.white,
                   child: Text(
                     userData['name']?.substring(0, 1).toUpperCase() ?? 'U',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue),
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue),
                   ),
                 ),
               );
@@ -73,7 +79,8 @@ class CustomDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => VehicleListScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => VehicleListScreen()),
                     );
                   },
                 ),
@@ -83,15 +90,31 @@ class CustomDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => VehicleFormScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => VehicleFormScreen()),
                     );
                   },
+                  
                 ),
                 ListTile(
                   leading: Icon(Icons.history, color: Colors.orange),
                   title: Text('Histórico de Abastecimentos'),
                   onTap: () {
                     Navigator.pushNamed(context, '/historico-abastecimentos');
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.local_gas_station, color: Colors.green),
+                  title: Text('Novo Abastecimento'),
+                  onTap: () {
+                    String vehicleId ='12345'; 
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RefuelFormScreen(vehicleId: vehicleId),
+                      ),
+                    );
                   },
                 ),
                 ListTile(

@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/controllers/refuel_service.dart';
+import 'package:flutter_application_1/model/refuel.dart';
+
 
 class RefuelingHistoryScreen extends StatefulWidget {
+  final String vehicleId;
+
+  const RefuelingHistoryScreen({required this.vehicleId});
+
   @override
   _RefuelingHistoryScreenState createState() => _RefuelingHistoryScreenState();
 }
 
 class _RefuelingHistoryScreenState extends State<RefuelingHistoryScreen> {
-  late Future<List<Map<String, dynamic>>> _refuelingHistory;
+  late Future<List<Refuel>> _refuelingHistory;
+  final RefuelService _refuelService = RefuelService();
 
   @override
   void initState() {
@@ -14,28 +23,8 @@ class _RefuelingHistoryScreenState extends State<RefuelingHistoryScreen> {
     _refuelingHistory = _fetchRefuelingHistory();
   }
 
-  Future<List<Map<String, dynamic>>> _fetchRefuelingHistory() async {
-    await Future.delayed(Duration(seconds: 1));
-    return [
-      {
-        'vehicle': 'Carro 1',
-        'date': '24/11/2024',
-        'quantity': 45.0,
-        'cost': 250.0,
-      },
-      {
-        'vehicle': 'Moto 2',
-        'date': '20/11/2024',
-        'quantity': 12.5,
-        'cost': 90.0,
-      },
-      {
-        'vehicle': 'Caminhão X',
-        'date': '10/11/2024',
-        'quantity': 100.0,
-        'cost': 650.0,
-      },
-    ];
+  Future<List<Refuel>> _fetchRefuelingHistory() {
+    return _refuelService.getRefuelsByVehicle(widget.vehicleId);
   }
 
   Future<void> _refreshHistory() async {
@@ -51,7 +40,7 @@ class _RefuelingHistoryScreenState extends State<RefuelingHistoryScreen> {
         title: Text('Histórico de Abastecimentos'),
         centerTitle: true,
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
+      body: FutureBuilder<List<Refuel>>(
         future: _refuelingHistory,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -68,13 +57,16 @@ class _RefuelingHistoryScreenState extends State<RefuelingHistoryScreen> {
             child: ListView.builder(
               itemCount: history.length,
               itemBuilder: (context, index) {
-                final item = history[index];
+                final refuel = history[index];
                 return ListTile(
                   leading: Icon(Icons.local_gas_station, color: Colors.blue),
-                  title: Text('${item['vehicle']}'),
+                  title: Text('Data: ${refuel.date.toLocal()}'.split(' ')[0]),
                   subtitle: Text(
-                      'Data: ${item['date']} | Quantidade: ${item['quantity']} L'),
-                  trailing: Text('R\$ ${item['cost'].toStringAsFixed(2)}'),
+                      'Litros: ${refuel.liters} L | Quilometragem: ${refuel.mileage} km'),
+                  trailing: Text(
+                    'ID: ${refuel.id}',
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
                 );
               },
             ),
