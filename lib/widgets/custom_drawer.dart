@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/auth_controller.dart';
+import 'package:flutter_application_1/view/home_screen.dart';
 import 'package:flutter_application_1/view/login_screen.dart';
-import '../controllers/auth_controller.dart';
+import 'package:flutter_application_1/view/vehicle_list_screen.dart';
+import 'package:flutter_application_1/view/vehicle_form_screen.dart';
+
 
 class CustomDrawer extends StatelessWidget {
   final AuthController _authController = AuthController();
@@ -21,27 +25,37 @@ class CustomDrawer extends StatelessWidget {
             leading: Icon(Icons.home),
             title: Text('Home'),
             onTap: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
             },
           ),
           ListTile(
             leading: Icon(Icons.car_rental),
             title: Text('Meus Veículos'),
             onTap: () {
-              Navigator.pushNamed(context, '/meus-veiculos');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => VehicleListScreen()),
+              );
             },
           ),
           ListTile(
             leading: Icon(Icons.add),
             title: Text('Adicionar Veículo'),
             onTap: () {
-              Navigator.pushNamed(context, '/adicionar-veiculo');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => VehicleFormScreen()),
+              );
             },
           ),
           ListTile(
             leading: Icon(Icons.history),
             title: Text('Histórico de Abastecimentos'),
             onTap: () {
+              // Redirecionar para a tela de Histórico de Abastecimentos
               Navigator.pushNamed(context, '/historico-abastecimentos');
             },
           ),
@@ -49,6 +63,7 @@ class CustomDrawer extends StatelessWidget {
             leading: Icon(Icons.person),
             title: Text('Perfil'),
             onTap: () {
+              // Redirecionar para a tela de Perfil
               Navigator.pushNamed(context, '/perfil');
             },
           ),
